@@ -3,7 +3,7 @@ from keras.models import Model, Sequential
 from keras.regularizers import l2
 from keras import backend as K
 from keras.optimizers import SGD,Adam
-
+import numpy as np
 class NetworkHumpback:
     def __init__(self):
         self.inputShape = (200,200,1)
@@ -63,3 +63,15 @@ class NetworkHumpback:
 
     def loadWeights(self,network, path):
         network.load_weights(path)
+
+    def updateEmbeddings(self,network,image,classe):
+        emb = network.predict(image)
+        embeddings = np.load('assets/embeddings.npy')
+        classes = np.load('assets/classes.npy')
+        emb = np.array(emb)
+        embeddings = np.concatenate([embeddings,emb])
+        
+        classe = np.array(classe)
+        classes = np.append(classes,classe)
+        np.save('assets/embeddings.npy', embeddings)
+        np.save('assets/classes.npy', classes)

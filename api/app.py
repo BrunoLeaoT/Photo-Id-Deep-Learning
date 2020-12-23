@@ -8,6 +8,8 @@ import os
 from PIL import Image
 from io import StringIO
 from prediction import Prediction
+from network_humpback import NetworkHumpback 
+
 application = Flask(__name__)
 CORS(application)
 
@@ -21,7 +23,11 @@ def predictSpecies():
     image = request.files.get('image1', '')
     image.save('temporary/image1.jpg', '')
     image = img_to_array(load_img('temporary/image1.jpg', color_mode = "grayscale",target_size=(150,150)))
-    return predictor.makePredictionSpecie(image)
+    try:
+        return predictor.makePredictionSpecie(image)
+    except Exception as e:
+        return Response(status=500, response="Something went wrong")
+    
 
 @application.route("/compare-images", methods=['POST'])
 def compareImages():
@@ -33,28 +39,53 @@ def compareImages():
     image2.save('temporary/image2.jpg', '')
     image2 = img_to_array(load_img('temporary/image2.jpg', color_mode = "grayscale",target_size=(200,200)))
 
-    res = predictor.compareImages(image1,image2)
-    if(res):
-        return "Equal"
-    return "Not equal" 
+    try:
+        res = predictor.compareImages(image1,image2)
+        if(res):
+            return Response(status=200,response="Equal")
+        return Response(status=200,response="Not equal")
+    except Exception as e:
+        return Response(status=500, response="Something went wrong") 
 
 @application.route("/identify", methods=['POST'])
 def classifyIndividual():
     image1 = request.files.get('image1', '')
     image1.save('temporary/image1.jpg', '')
     image1 = img_to_array(load_img('temporary/image1.jpg', color_mode = "grayscale",target_size=(200,200)))
-    (value,classe)=  predictor.makePredictionIndividual(image1)
-    return jsonify({classe:str(value)})
+    try:
+        (value,classe)=  predictor.makePredictionIndividual(image1)
+        return jsonify({classe:str(value)})
+    except Exception as e:
+        print(e)
+        return Response(status=500, response="Something went wrong")
 
-@application.route("/", methods=['POST'])
+@application.route("/indetify-between-individuals", methods=['POST'])
 def classifyIndividualWithSpecifics():
-    return "Bem vindo a api do Photo-Id Neural Network"
+    individuals =  request.form["individuals"].split(",")
+    print(individuals)
+    image1 = request.files.get('image1', '')
+    image1.save('temporary/image1.jpg', '')
+    image1 = img_to_array(load_img('temporary/image1.jpg', color_mode = "grayscale",target_size=(200,200)))
+    
+    try:
+        (value,classe)=  predictor.makePredictionIndividual(image1,individuals)
+        return jsonify({classe:str(value)})
+    except Exception as e:
+        return Response(status=500)
+    
+@application.route("/update-base", methods=['POST'])
+def update():
+    classe =  request.form["classe"]
+    image1 = request.files.get('image1', '')
+    image1.save('temporary/image1.jpg', '')
+    image1 = img_to_array(load_img('temporary/image1.jpg', color_mode = "grayscale",target_size=(200,200)))
+    try:
+        predictor.update(image1,classe)
+        return Response(status=200,response="ok")
+    except Exception as e:
+        print(e)
+        return Response(status=500,response="Something went wrong")
+
 
 if __name__ == '__main__':
     application.run(threaded=True, debug=True)
-
-# Criar uma classe pra rede neural
-# criar uma classe para o model
-# ja existe a classe para o tratamaneto dos dados
-# Utilizar elas para executar a funções da api
-# Utilizar um "controller" que usa destas classes para fazer a previsão e a aceitação da resposta do usuário

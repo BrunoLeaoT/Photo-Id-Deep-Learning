@@ -43,3 +43,5 @@ class NetworkSpecies:
     def load_weights(self):
         self.model.load_weights('assets/my_model_weights.h5')
         return self.model
+
+
