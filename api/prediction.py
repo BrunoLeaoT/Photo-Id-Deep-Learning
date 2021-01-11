@@ -23,6 +23,7 @@ class Prediction:
         targets = np.array(targets)
         try:
             predicition = self.modelSpecies.predict(targets)
+            print(predicition[0][0])
             if(predicition < 0.5):
                 return "Humpback whale"
             else:
@@ -87,8 +88,8 @@ class Prediction:
 
             # Check if distance lower then the threshold
             if(distance < 0.86):
-                return True
-            return False
+                return (True,distance)
+            return (False,distance)
         except Exception as e:
             print(e)
             return "Error during prediction"

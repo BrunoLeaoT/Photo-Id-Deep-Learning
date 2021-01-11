@@ -40,7 +40,8 @@ def compareImages():
     image2 = img_to_array(load_img('temporary/image2.jpg', color_mode = "grayscale",target_size=(200,200)))
 
     try:
-        res = predictor.compareImages(image1,image2)
+        (res,prob) = predictor.compareImages(image1,image2)
+        print(prob)
         if(res):
             return Response(status=200,response="Equal")
         return Response(status=200,response="Not equal")

@@ -41,7 +41,7 @@ class NetworkSpecies:
                     metrics=['accuracy'])
 
     def load_weights(self):
-        self.model.load_weights('assets/my_model_weights.h5')
+        self.model.load_weights('assets/species_model_weights.h5')
         return self.model
 
 
