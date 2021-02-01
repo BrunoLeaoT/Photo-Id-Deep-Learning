@@ -1,6 +1,8 @@
 from network_humpback import NetworkHumpback 
 from network_species import NetworkSpecies
+from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
+
 class Prediction:
     def __init__(self):
         # Individual network
@@ -11,19 +13,21 @@ class Prediction:
         self.classes = np.load('assets/classes.npy')
         
         # Species network
-        networkSpecies = NetworkSpecies()
-        networkSpecies.build_model()
-        self.modelSpecies = networkSpecies.load_weights()
+        self.networkSpecies = NetworkSpecies()
+        self.networkSpecies.build_model()
+        self.networkSpecies.load_weights()
 
     def computeDist(self,a,b):
         return np.sum(np.square(a-b))
 
     def makePredictionSpecie(self,image):
-        targets = [image]
-        targets = np.array(targets)
+
+        targets = np.array([image/255.0])
         try:
-            predicition = self.modelSpecies.predict(targets)
-            print(predicition[0][0])
+            # test_datagen = ImageDataGenerator(rescale=1./255.0)
+            # test_generator = test_datagen.flow_from_directory(directory='temporary/image1.jpg',target_size=(150, 150),color_mode="grayscale",batch_size=1,class_mode=None,shuffle=False,seed=42)
+            predicition = self.networkSpecies.model.predict_generator(targets)
+            print(predicition)
             if(predicition < 0.5):
                 return "Humpback whale"
             else:
