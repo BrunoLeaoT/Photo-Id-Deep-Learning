@@ -1,5 +1,5 @@
 # Photo-Id API
-Desenvolvido por Bruno Leão
+Developed by Bruno Leão
 
 #
 ### Installation
