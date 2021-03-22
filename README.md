@@ -30,7 +30,7 @@ Route to indentify in image the species of a whale between two species: Humpback
 The class of the image, in this case: Humpback whale or Right whale
 
 ### 2 - http://127.0.0.1:5000/identify 
-Route to indentify in a image, the individual. Only works for Humpback, feel free to make it work with right whale.
+Route to indentify in an image, the individual. Only works for Humpback, feel free to make it work with right whale.
 
 ##### params:
 - image1: Image of the humpback whale, in png or jpg format.
@@ -70,7 +70,7 @@ A simple message saying if it went everything okay or something went wrong.
 
 ## What's next?
 
-Since this is a open source api, I highly encourage and desire to see contributions to this project and these could be:
+Since this is an open source api, I highly encourage and desire to see contributions to this project and these could be:
 - New species in the photo-id
 - A Neural Network to the Right Whale
 - Enhance the current networks
