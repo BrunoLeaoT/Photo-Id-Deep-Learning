@@ -1,5 +1,5 @@
 # Photo-Id API
-Developted por Bruno Leão
+Developted by Bruno Leão
 
 ### Installation
 
@@ -76,6 +76,12 @@ Since this is an open source api, I highly encourage and desire to see contribut
 - Enhance the current networks
 - Any other that you feel is going to be good for the project, feel free.
  
+### Observations
+Images aren`t provided in git, because it`s not in my right to share them.
+Those were the data-sets:
+https://www.kaggle.com/c/noaa-right-whale-recognition
+https://www.kaggle.com/c/humpback-whale-identification
+
 ### Any doubt please contact me.
 
 
